@@ -76,13 +76,16 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
     {
         $ts1 = UniversalTimestamp::fromWhatever(1445817008639);
         $ts2 = UniversalTimestamp::fromWhatever(new \DateTime());
-        $ts3 = UniversalTimestamp::fromWhatever(new \MongoDate());
-        $ts4 = UniversalTimestamp::fromWhatever(null);
+        $ts3 = UniversalTimestamp::fromWhatever(null);
 
         $this->assertTrue($ts1 instanceof UniversalTimestamp);
         $this->assertTrue($ts2 instanceof UniversalTimestamp);
         $this->assertTrue($ts3 instanceof UniversalTimestamp);
-        $this->assertTrue($ts4 instanceof UniversalTimestamp);
+
+        if (extension_loaded('mongo')) {
+            $ts4 = UniversalTimestamp::fromWhatever(new \MongoDate());
+            $this->assertTrue($ts4 instanceof UniversalTimestamp);
+        }
     }
 
     /**
