@@ -18,3 +18,14 @@ composer require litipk/jiffy
 
 ## Usage
 
+The PHP Jiffy library provides the `UniversalTimestamp` class, which allows you to record timestamps with milliseconds and microseconds precision and to convert it to other "timestamp types" whenever you need to do it.
+
+```php
+<?php
+
+use Litipk\Jiffy\UniversalTimestamp;
+
+$now = UniversalTimestamp::now();
+$fromDateTime = UniversalTimestamp::fromDateTimeInterface(new \DateTime());
+$fromMongoDate = UniversalTimestamp::fromMongoDate(new \MongoDate());
+```
