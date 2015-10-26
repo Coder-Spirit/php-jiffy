@@ -22,8 +22,9 @@ The PHP Jiffy library provides the `UniversalTimestamp` class, which allows you 
 and microseconds precision and to convert it to other "timestamp types" whenever you need to do it.
 
 The supported PHP versions are **5.5**, **5.6**, **7.0** and **HHVM**.
-The MongoDB related methods are only available when the `mongo` extension is loaded.
-On *PHP 7.0* and *HHVM*, the `mongo` extensint isn't loaded.
+
+**Notice*:* The MongoDB related methods are only available when the `mongo` extension is loaded.
+On *PHP 7.0* and *HHVM*, the `mongo` extension isn't loaded.
 
 ```php
 <?php
