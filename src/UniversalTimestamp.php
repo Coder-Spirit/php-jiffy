@@ -17,7 +17,7 @@ if (!extension_loaded('mongo')) {
  */
 class UniversalTimestamp
 {
-    use MongoAdapter;
+    use TsExtension;
 
     /** @var int */
     private $millis;
