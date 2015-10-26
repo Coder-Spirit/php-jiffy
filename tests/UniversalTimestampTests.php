@@ -72,6 +72,28 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
         $uTs = UniversalTimestamp::fromMillisecondsTimestamp(-1445817008639);
     }
 
+    public function testFromWhatever()
+    {
+        $ts1 = UniversalTimestamp::fromWhatever(1445817008639);
+        $ts2 = UniversalTimestamp::fromWhatever(new \DateTime());
+        $ts3 = UniversalTimestamp::fromWhatever(new \MongoDate());
+        $ts4 = UniversalTimestamp::fromWhatever(null);
+
+        $this->assertTrue($ts1 instanceof UniversalTimestamp);
+        $this->assertTrue($ts2 instanceof UniversalTimestamp);
+        $this->assertTrue($ts3 instanceof UniversalTimestamp);
+        $this->assertTrue($ts4 instanceof UniversalTimestamp);
+    }
+
+    /**
+     * @expectedException \Litipk\Jiffy\JiffyException
+     * @expectedExceptionMessage The provided value cannot be interpreted as a timestamp
+     */
+    public function testFromWhatever_WithInvalidTimestamp()
+    {
+        $ts1 = UniversalTimestamp::fromWhatever("Hello");
+    }
+
     public function testIsGreaterThan()
     {
         $ts1 = UniversalTimestamp::now();

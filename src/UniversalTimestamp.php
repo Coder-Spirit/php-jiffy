@@ -83,6 +83,26 @@ class UniversalTimestamp
     }
 
     /**
+     * @param mixed $dateObject   If it's an integer, then it's understood as milliseconds since epoch
+     * @return UniversalTimestamp
+     */
+    public static function fromWhatever($dateObject) {
+        if (null === $dateObject) {
+            return static::now();
+        } elseif (is_int($dateObject)) {
+            return static::fromMillisecondsTimestamp($dateObject);
+        } elseif ($dateObject instanceof UniversalTimestamp) {
+            return $dateObject;
+        } elseif ($dateObject instanceof \DateTimeInterface) {
+            return static::fromDateTimeInterface($dateObject);
+        } elseif ($dateObject instanceof \MongoDate) {
+            return static::fromMongoDate($dateObject);
+        } else {
+            throw new JiffyException('The provided value cannot be interpreted as a timestamp');
+        }
+    }
+
+    /**
      * @param UniversalTimestamp $otherTimestamp
      * @return boolean
      */
