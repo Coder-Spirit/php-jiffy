@@ -6,7 +6,7 @@
 [![Coverage Status](https://img.shields.io/scrutinizer/coverage/g/litipk/php-jiffy.svg?style=flat-square)](https://scrutinizer-ci.com/g/litipk/php-jiffy/code-structure)
 [![Quality Score](https://img.shields.io/scrutinizer/g/litipk/php-jiffy.svg?style=flat-square)](https://scrutinizer-ci.com/g/litipk/php-jiffy)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
-[![Packagist Version](https://img.shields.io/packagist/v/litipk/php-jiffy.svg?style=flat-square)](https://packagist.org/packages/litipk/php-jiffy)
+[![Packagist Version](https://img.shields.io/packagist/v/Litipk/php-jiffy.svg?style=flat-square)](https://packagist.org/packages/Litipk/php-jiffy)
 [![Total Downloads](https://img.shields.io/packagist/dt/litipk/php-jiffy.svg?style=flat-square)](https://packagist.org/packages/litipk/php-jiffy)
 
 
