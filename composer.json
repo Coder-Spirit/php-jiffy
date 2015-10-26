@@ -14,8 +14,7 @@
         "source": "http://github.com/Litipk/php-jiffy"
     },
     "require": {
-        "php": ">=5.4.0",
-        "league/flysystem": "~1.0"
+        "php": ">=5.5.0"
     },
     "require-dev": {
         "ext-mongo": "*",
