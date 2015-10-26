@@ -1,0 +1,9 @@
+.idea
+.vagrant
+composer.lock
+Vagrantfile
+provisioning
+coverage.xml
+coverage
+/vendor/
+/bin/
