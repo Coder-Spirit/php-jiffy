@@ -30,6 +30,8 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
 
     public function testFromMongoDate()
     {
+        if (!extension_loaded('mongo')) return;
+
         $uTs_A = UniversalTimestamp::now();
         $uTs_B = UniversalTimestamp::fromMongoDate(new \MongoDate());
         $uTs_C = UniversalTimestamp::now();
@@ -128,6 +130,8 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
 
     public function testAsMongoDate()
     {
+        if (!extension_loaded('mongo')) return;
+
         $ts1 = UniversalTimestamp::fromMongoDate(new \MongoDate());
         $md1 = $ts1->asMongoDate();
 
@@ -138,8 +142,8 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $this->assertEquals('2015-10-26T01:00:46+0100', UniversalTimestamp::fromSecondsTimestamp(1445817646));
-        $this->assertEquals('2015-10-26T01:00:47+0100', UniversalTimestamp::fromSecondsTimestamp(1445817647));
-        $this->assertEquals('2015-10-26T01:01:47+0100', UniversalTimestamp::fromSecondsTimestamp(1445817707));
+        $this->assertEquals('2015-10-26T01:00:46+0100', (string)UniversalTimestamp::fromSecondsTimestamp(1445817646));
+        $this->assertEquals('2015-10-26T01:00:47+0100', (string)UniversalTimestamp::fromSecondsTimestamp(1445817647));
+        $this->assertEquals('2015-10-26T01:01:47+0100', (string)UniversalTimestamp::fromSecondsTimestamp(1445817707));
     }
 }
