@@ -23,7 +23,7 @@ and microseconds precision and to convert it to other "timestamp types" whenever
 
 The supported PHP versions are **5.5**, **5.6**, **7.0** and **HHVM**.
 
-**Notice*:* The MongoDB related methods are only available when the `mongo` extension is loaded.
+**Notice:** The MongoDB related methods are only available when the `mongo` extension is loaded.
 On *PHP 7.0* and *HHVM*, the `mongo` extension isn't loaded.
 
 ```php
