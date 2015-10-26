@@ -5,9 +5,9 @@ namespace Litipk\Jiffy;
 
 
 if (!extension_loaded('mongo')) {
-    trait MongoAdapter {};
+    trait TsExtension {};
 } else {
-    require('MongoAdapter.php');
+    trait TsExtension { use MongoAdapter; };
 }
 
 
