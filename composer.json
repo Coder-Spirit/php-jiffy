@@ -1,6 +1,7 @@
 {
     "name": "litipk/php-jiffy",
     "description": "A library to handle precise timestamps the easy way.",
+    "keywords": ["time", "timestamp"],
     "license": "MIT",
     "authors": [
         {
