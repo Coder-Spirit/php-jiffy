@@ -178,4 +178,22 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
         $this->assertEquals($ts1->asSeconds(), $ts2->asSeconds());
         $this->assertEquals($ts1->asSeconds(), $ts3->asSeconds());
     }
+
+    public function testAsFormattedString_WithSpecialSettings()
+    {
+        $ts1 = UniversalTimestamp::fromMillisecondsTimestamp(1445817646571);
+
+        $this->assertEquals(
+            '2015-10-26T00:00:46.571+0000',
+            $ts1->asFormattedString(\DateTime::ISO8601, 'UTC', true, false)
+        );
+        $this->assertEquals(
+            '2015-10-26T00:00:46.571',
+            $ts1->asFormattedString(\DateTime::ISO8601, 'UTC', true, true)
+        );
+        $this->assertEquals(
+            '2015-10-26T00:00:46',
+            $ts1->asFormattedString(\DateTime::ISO8601, 'UTC', false, true)
+        );
+    }
 }

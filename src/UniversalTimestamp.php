@@ -157,21 +157,39 @@ class UniversalTimestamp
     }
 
     /**
+     * @param string|\DateTimeZone $tz
      * @return \DateTimeImmutable
      */
-    public function asDateTimeInterface()
+    public function asDateTimeInterface($tz = 'UTC')
     {
         $dateTime = new \DateTimeImmutable();
-        return $dateTime->setTimestamp($this->asSeconds());
+        return $dateTime
+            ->setTimestamp($this->asSeconds())
+            ->setTimezone(is_string($tz) ? new \DateTimeZone($tz) : $tz);
     }
 
     /**
      * @param string $format
+     * @param string|\DateTimeZone $tz
+     * @param bool $showMillis
+     * @param bool $stripTz
      * @return string
      */
-    public function asFormattedString($format = \DateTime::ISO8601)
+    public function asFormattedString(
+        $format = \DateTime::ISO8601, $tz = 'UTC', $showMillis = false, $stripTz = false
+    )
     {
-        return $this->asDateTimeInterface()->format($format);
+        $r = $this->asDateTimeInterface($tz)->format($format);
+
+        if (\DateTime::ISO8601 === $format && $showMillis) {
+            $rParts = preg_split('/\+/', $r);
+            $r = $rParts[0].'.'.((string)$this->millis%1000).($stripTz?'':('+'.$rParts[1]));
+        } elseif (\DateTime::ISO8601 === $format && $stripTz) {
+            $rParts = preg_split('/\+/', $r);
+            $r = $rParts[0];
+        }
+
+        return $r;
     }
 
     /**
