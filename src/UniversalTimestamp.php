@@ -163,9 +163,15 @@ class UniversalTimestamp
     public function asDateTimeInterface($tz = 'UTC')
     {
         $dateTime = new \DateTimeImmutable();
-        return $dateTime
+        $dateTime = $dateTime
             ->setTimestamp($this->asSeconds())
             ->setTimezone(is_string($tz) ? new \DateTimeZone($tz) : $tz);
+
+        return new \DateTimeImmutable(
+            $dateTime->format('Y-m-d\TH:i:s').'.'.
+            sprintf("%'.03d", $this->millis%1000).sprintf("%'.03d", $this->micros).
+            $dateTime->format('O')
+        );
     }
 
     /**
