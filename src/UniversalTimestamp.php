@@ -60,7 +60,12 @@ class UniversalTimestamp
      */
     public static function fromDateTimeInterface(\DateTimeInterface $dateTime)
     {
-        return new UniversalTimestamp($dateTime->getTimestamp()*1000, 0);
+        $dtU = (int)$dateTime->format('u');
+
+        return new UniversalTimestamp(
+            $dateTime->getTimestamp()*1000 + (int)floor($dtU/1000),
+            $dtU % 1000
+        );
     }
 
     /**
