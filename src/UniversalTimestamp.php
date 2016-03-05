@@ -4,10 +4,14 @@
 namespace Litipk\Jiffy;
 
 
-if (!extension_loaded('mongo')) {
-    trait TsExtension {};
-} else {
+if (extension_loaded('mongo') && extension_loaded('mongodb')) {
+    trait TsExtension { use MongoAdapter; use MongodbAdapter; };
+} elseif (extension_loaded('mongo')) {
     trait TsExtension { use MongoAdapter; };
+} elseif (extension_loaded('mongodb')) {
+    trait TsExtension { use MongodbAdapter; };
+} else {
+    trait TsExtension {};
 }
 
 
