@@ -17,6 +17,11 @@ if (!extension_loaded('mongo')) {
  */
 class UniversalTimestamp
 {
+    const ISO8601_WITH_MILLISECONDS = '_ISO8601_WITH_MILLIS_';
+    const ISO8601_WITH_MILLISECONDS_WITHOUT_TZ = '_ISO8601_WITH_MILLIS_WITHOUT_TZ';
+    const ISO8601_WITH_MICROSECONDS = 'Y-m-d\TH:i:s.uO';
+    const ISO8601_WITH_MICROSECONDS_WITHOUT_TZ = 'Y-m-d\TH:i:s.u';
+
     use TsExtension;
 
     /** @var int */
@@ -167,14 +172,12 @@ class UniversalTimestamp
      */
     public function asDateTimeInterface($tz = 'UTC')
     {
-        $dateTime = new \DateTimeImmutable();
-        $dateTime = $dateTime
-            ->setTimestamp($this->asSeconds())
-            ->setTimezone(is_string($tz) ? new \DateTimeZone($tz) : $tz);
+        $dateTime = new \DateTimeImmutable('@'.((string)$this->asSeconds()));
+        $dateTime = $dateTime->setTimezone(is_string($tz) ? new \DateTimeZone($tz) : $tz);
 
         return new \DateTimeImmutable(
             $dateTime->format('Y-m-d\TH:i:s').'.'.
-            sprintf("%'.03d", $this->millis%1000).sprintf("%'.03d", $this->micros).
+            sprintf("%03d", $this->millis%1000).sprintf("%03d", $this->micros).
             $dateTime->format('O')
         );
     }
@@ -182,25 +185,19 @@ class UniversalTimestamp
     /**
      * @param string $format
      * @param string|\DateTimeZone $tz
-     * @param bool $showMillis
-     * @param bool $stripTz
      * @return string
      */
-    public function asFormattedString(
-        $format = \DateTime::ISO8601, $tz = 'UTC', $showMillis = false, $stripTz = false
-    )
+    public function asFormattedString($format = self::ISO8601_WITH_MICROSECONDS, $tz = 'UTC')
     {
-        $r = $this->asDateTimeInterface($tz)->format($format);
-
-        if (\DateTime::ISO8601 === $format && $showMillis) {
-            $rParts = preg_split('/\+/', $r);
-            $r = $rParts[0].'.'.((string)$this->millis%1000).($stripTz?'':('+'.$rParts[1]));
-        } elseif (\DateTime::ISO8601 === $format && $stripTz) {
-            $rParts = preg_split('/\+/', $r);
-            $r = $rParts[0];
+        if (self::ISO8601_WITH_MILLISECONDS === $format) {
+            $rParts = preg_split('/\+/', $this->asDateTimeInterface($tz)->format(\DateTime::ISO8601));
+            return $rParts[0].'.'.((string)$this->millis%1000).'+'.$rParts[1];
+        } elseif (self::ISO8601_WITH_MILLISECONDS_WITHOUT_TZ === $format) {
+            $rParts = preg_split('/\+/', $this->asDateTimeInterface($tz)->format(\DateTime::ISO8601));
+            return $rParts[0].'.'.((string)$this->millis%1000);
+        } else {
+            return $this->asDateTimeInterface($tz)->format($format);
         }
-
-        return $r;
     }
 
     /**

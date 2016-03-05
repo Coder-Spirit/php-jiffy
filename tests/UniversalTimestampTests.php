@@ -167,33 +167,39 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
 
     public function testToString()
     {
-        $ts1 = UniversalTimestamp::fromSecondsTimestamp(1445817646);
+        $ts1 = UniversalTimestamp::fromMillisecondsTimestamp(1445817646455, 378);
 
-        $d1 = \DateTime::createFromFormat(\DateTime::ISO8601, $ts1->asFormattedString());
-        $d2 = \DateTime::createFromFormat(\DateTime::ISO8601, (string)$ts1);
+        $d1 = new \DateTime($ts1->asFormattedString());
+        $d2 = new \DateTime((string)$ts1);
 
         $ts2 = UniversalTimestamp::fromDateTimeInterface($d1);
         $ts3 = UniversalTimestamp::fromDateTimeInterface($d2);
 
         $this->assertEquals($ts1->asSeconds(), $ts2->asSeconds());
+        $this->assertEquals($ts1->asMilliseconds(), $ts2->asMilliseconds());
         $this->assertEquals($ts1->asSeconds(), $ts3->asSeconds());
+        $this->assertEquals($ts1->asMilliseconds(), $ts3->asMilliseconds());
     }
 
     public function testAsFormattedString_WithSpecialSettings()
     {
-        $ts1 = UniversalTimestamp::fromMillisecondsTimestamp(1445817646571);
+        $ts1 = UniversalTimestamp::fromMillisecondsTimestamp(1445817646571, 473);
 
         $this->assertEquals(
             '2015-10-26T00:00:46.571+0000',
-            $ts1->asFormattedString(\DateTime::ISO8601, 'UTC', true, false)
+            $ts1->asFormattedString(UniversalTimestamp::ISO8601_WITH_MILLISECONDS, 'UTC')
         );
         $this->assertEquals(
             '2015-10-26T00:00:46.571',
-            $ts1->asFormattedString(\DateTime::ISO8601, 'UTC', true, true)
+            $ts1->asFormattedString(UniversalTimestamp::ISO8601_WITH_MILLISECONDS_WITHOUT_TZ, 'UTC')
         );
         $this->assertEquals(
-            '2015-10-26T00:00:46',
-            $ts1->asFormattedString(\DateTime::ISO8601, 'UTC', false, true)
+            '2015-10-26T00:00:46.571473+0000',
+            $ts1->asFormattedString(UniversalTimestamp::ISO8601_WITH_MICROSECONDS, 'UTC')
+        );
+        $this->assertEquals(
+            '2015-10-26T00:00:46.571473',
+            $ts1->asFormattedString(UniversalTimestamp::ISO8601_WITH_MICROSECONDS_WITHOUT_TZ, 'UTC')
         );
     }
 }
