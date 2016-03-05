@@ -33,5 +33,4 @@ $fromDateTime = UniversalTimestamp::fromDateTimeInterface(new \DateTime());
 $fromMongoDate = UniversalTimestamp::fromMongoDate(new \MongoDate());
 ```
 
-**Notice:** The MongoDB related methods are only available when the `mongo` extension is loaded.
-On *PHP 7.0* and *HHVM*, the `mongo` extension isn't loaded.
+**Notice:** The MongoDB related methods are only available when the `mongo` or `mongodb` extensions are loaded.
