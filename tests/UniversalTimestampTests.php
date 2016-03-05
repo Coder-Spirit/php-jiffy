@@ -71,6 +71,12 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
             $ts4 = UniversalTimestamp::fromWhatever(new \MongoDate());
             $this->assertTrue($ts4 instanceof UniversalTimestamp);
         }
+        if (extension_loaded('mongodb')) {
+            $ts4 = UniversalTimestamp::fromWhatever(
+                new \MongoDB\BSON\UTCDatetime(UniversalTimestamp::now()->asMilliseconds())
+            );
+            $this->assertTrue($ts4 instanceof UniversalTimestamp);
+        }
     }
 
     /**

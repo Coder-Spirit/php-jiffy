@@ -111,7 +111,9 @@ class UniversalTimestamp
             return static::fromDateTimeInterface($dateObject);
         } elseif ($dateObject instanceof \MongoDate) {
             return static::fromMongoDate($dateObject);
-        } else {
+        } elseif ($dateObject instanceof \MongoDB\BSON\UTCDatetime) {
+            return static::fromMongodbUTCDateTime($dateObject);
+        }else {
             throw new JiffyException('The provided value cannot be interpreted as a timestamp');
         }
     }

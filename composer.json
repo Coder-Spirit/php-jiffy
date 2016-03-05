@@ -19,6 +19,7 @@
     },
     "require-dev": {
         "ext-mongo": "*",
+        "ext-mongodb": "*",
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {
