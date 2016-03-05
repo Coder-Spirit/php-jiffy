@@ -1,13 +1,37 @@
 language: php
 
-php:
-  - 5.5
-  - 5.6
-  - 7.0
-  - hhvm
+cache:
+  directories:
+    - "$HOME/.composer/cache"
 
-env:
-  - MONGO_VERSION=stable PREFER_LOWEST=""
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.5
+      env:
+        - MONGO_EXTENSION=mongo
+    - php: 5.5
+      env:
+        - MONGODB_EXTENSION=mongodb
+    - php: 5.5
+      env:
+        - MONGO_EXTENSION=mongo
+        - MONGODB_EXTENSION=mongodb
+    - php: 5.6
+      env:
+        - MONGO_EXTENSION=mongo
+    - php: 5.6
+      env:
+        - MONGODB_EXTENSION=mongodb
+    - php: 5.6
+      env:
+        - MONGO_EXTENSION=mongo
+        - MONGODB_EXTENSION=mongodb
+        - SEND_TO_OCULAR=yes
+    - php: 7.0
+      env:
+        - MONGODB_EXTENSION=mongodb
+    - php: hhvm
 
 before_install:
   - bash -c 'mkdir bin'
@@ -17,7 +41,8 @@ before_install:
   - bash -c 'if [ "$TRAVIS_PHP_VERSION" == "hhvm" ]; then mv phpunit.hhvm.xml phpunit.xml; fi;'
 
 install:
-  - travis_retry bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then yes "" | pecl -q install -f mongo-${MONGO_VERSION}; fi;'
+  - travis_retry bash -c 'if [ "$MONGO_EXTENSION" == "mongo" ]; then yes "" | pecl -q install -f mongo-stable; fi;'
+  - travis_retry bash -c 'if [ "$MONGODB_EXTENSION" == "mongodb" ]; then yes "" | pecl -q install -f mongodb-stable; fi;'
   - travis_retry ./bin/composer.phar install --ignore-platform-reqs --no-interaction --prefer-source
 
 script:
@@ -25,4 +50,4 @@ script:
 
 after_script:
   - travis_retry wget https://scrutinizer-ci.com/ocular.phar
-  - travis_retry bash -c 'if [ "$TRAVIS_PHP_VERSION" != "hhvm" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.xml; fi;'
+  - travis_retry bash -c 'if [ "$SEND_TO_OCULAR" == "yes" ]; then php ocular.phar code-coverage:upload --format=php-clover coverage.xml; fi;'
