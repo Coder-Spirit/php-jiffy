@@ -33,5 +33,10 @@ $fromDateTime = UniversalTimestamp::fromDateTimeInterface(new \DateTime());
 $fromMongoDate = UniversalTimestamp::fromMongoDate(new \MongoDate());
 ```
 
-**Notice:** The MongoDB related methods are only available when the `mongo` extension is loaded.
-On *PHP 7.0* and *HHVM*, the `mongo` extension isn't loaded.
+**Notice:** The MongoDB related methods are only available when the `mongo` or `mongodb` extensions are loaded.
+
+## Integration with Doctrine
+If you want to use Jiffy's UniversalTimesamp objects in your Doctrine models, you can use our adapter layers:
+
+* [**Jiffy Universal Timestamps for MongoDB ODM**](https://github.com/Litipk/doctrine-mongodb-jiffy/)
+* **Jiffy Universal Timestamps for Doctrine ORM** : *Work in progress*.
