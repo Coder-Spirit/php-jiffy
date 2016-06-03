@@ -84,10 +84,15 @@ final class UniversalTimestamp
      */
     public static function fromStringTimestamp($strTimestamp, $tz = 'UTC')
     {
-        return self::fromDateTimeInterface(new \DateTimeImmutable(
-            $strTimestamp,
-            ($tz instanceof \DateTimeZone) ? $tz : new \DateTimeZone($tz)
-        ));
+        try {
+            $dt = new \DateTimeImmutable(
+                $strTimestamp,
+                ($tz instanceof \DateTimeZone) ? $tz : new \DateTimeZone($tz)
+            );
+        } catch (\Exception $e) {
+            throw new JiffyException('The provided value cannot be interpreted as a timestamp');
+        }
+        return self::fromDateTimeInterface($dt);
     }
 
     /**
