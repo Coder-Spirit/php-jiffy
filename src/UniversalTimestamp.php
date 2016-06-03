@@ -15,7 +15,7 @@ if (!extension_loaded('mongo')) {
  * Class UniversalTimestamp
  * @package Litipk\Jiffy
  */
-class UniversalTimestamp
+final class UniversalTimestamp
 {
     use TsExtension;
 
@@ -69,6 +69,19 @@ class UniversalTimestamp
     }
 
     /**
+     * @param string $strTimestamp
+     * @param string $tz
+     * @return UniversalTimestamp
+     */
+    public static function fromStringTimestamp($strTimestamp, $tz = 'UTC')
+    {
+        return self::fromDateTimeInterface(new \DateTimeImmutable(
+            $strTimestamp,
+            ($tz instanceof \DateTimeZone) ? $tz : new \DateTimeZone($tz)
+        ));
+    }
+
+    /**
      * @param int $secondsSinceEpoch
      * @return UniversalTimestamp
      */
@@ -93,15 +106,17 @@ class UniversalTimestamp
      */
     public static function fromWhatever($dateObject) {
         if (null === $dateObject) {
-            return static::now();
+            return self::now();
         } elseif (is_int($dateObject)) {
-            return static::fromMillisecondsTimestamp($dateObject);
+            return self::fromMillisecondsTimestamp($dateObject);
+        } elseif (is_string($dateObject)) {
+            return self::fromStringTimestamp($dateObject);
         } elseif ($dateObject instanceof UniversalTimestamp) {
             return $dateObject;
         } elseif ($dateObject instanceof \DateTimeInterface) {
-            return static::fromDateTimeInterface($dateObject);
+            return self::fromDateTimeInterface($dateObject);
         } elseif ($dateObject instanceof \MongoDate) {
-            return static::fromMongoDate($dateObject);
+            return self::fromMongoDate($dateObject);
         } else {
             throw new JiffyException('The provided value cannot be interpreted as a timestamp');
         }
@@ -125,7 +140,10 @@ class UniversalTimestamp
      */
     public function addSeconds($seconds)
     {
-        return new UniversalTimestamp($this->millis + 1000*$seconds, $this->micros);
+        $copy = clone $this;
+        $copy->millis += 1000*$seconds;
+
+        return $copy;
     }
 
     /**
@@ -134,7 +152,10 @@ class UniversalTimestamp
      */
     public function addMilliseconds($millis)
     {
-        return new UniversalTimestamp($this->millis + $millis, $this->micros);
+        $copy = clone $this;
+        $copy->millis += $millis;
+
+        return $copy;
     }
 
     /**
