@@ -48,6 +48,16 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
         $this->assertGreaterThanOrEqual($uTs_A->asSeconds(), $classicTs_B);
     }
 
+    public function testFromStringTimestamp()
+    {
+        $classicTs_A = '2015-10-25 12:00:00';
+        $uTs_A = UniversalTimestamp::fromStringTimestamp('2015-10-25 12:30:00');
+        $classicTs_B = '2015-10-25 13:00:00';
+
+        $this->assertGreaterThanOrEqual($classicTs_A, $uTs_A->asFormattedString('Y-m-d H:i:s'));
+        $this->assertGreaterThanOrEqual($uTs_A->asFormattedString('Y-m-d H:i:s'), $classicTs_B);
+    }
+
     /**
      * @expectedException \Litipk\Jiffy\JiffyException
      * @expectedExceptionMessage The number of milliseconds and microseconds must be positive
@@ -62,20 +72,22 @@ class UniversalTimestampTests extends \PHPUnit_Framework_TestCase
         $ts1 = UniversalTimestamp::fromWhatever(1445817008639);
         $ts2 = UniversalTimestamp::fromWhatever(new \DateTime());
         $ts3 = UniversalTimestamp::fromWhatever(null);
+        $ts4 = UniversalTimestamp::fromWhatever("2015-10-25 00:00:00");
 
         $this->assertTrue($ts1 instanceof UniversalTimestamp);
         $this->assertTrue($ts2 instanceof UniversalTimestamp);
         $this->assertTrue($ts3 instanceof UniversalTimestamp);
+        $this->assertTrue($ts4 instanceof UniversalTimestamp);
 
         if (extension_loaded('mongo')) {
-            $ts4 = UniversalTimestamp::fromWhatever(new \MongoDate());
-            $this->assertTrue($ts4 instanceof UniversalTimestamp);
+            $ts5 = UniversalTimestamp::fromWhatever(new \MongoDate());
+            $this->assertTrue($ts5 instanceof UniversalTimestamp);
         }
         if (extension_loaded('mongodb')) {
-            $ts4 = UniversalTimestamp::fromWhatever(
+            $ts5 = UniversalTimestamp::fromWhatever(
                 new \MongoDB\BSON\UTCDatetime(UniversalTimestamp::now()->asMilliseconds())
             );
-            $this->assertTrue($ts4 instanceof UniversalTimestamp);
+            $this->assertTrue($ts5 instanceof UniversalTimestamp);
         }
     }
 
