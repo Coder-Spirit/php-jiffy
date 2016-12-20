@@ -7,16 +7,6 @@ cache:
 matrix:
   fast_finish: true
   include:
-    - php: 5.5
-      env:
-        - MONGO_EXTENSION=mongo
-    - php: 5.5
-      env:
-        - MONGODB_EXTENSION=mongodb
-    - php: 5.5
-      env:
-        - MONGO_EXTENSION=mongo
-        - MONGODB_EXTENSION=mongodb
     - php: 5.6
       env:
         - MONGO_EXTENSION=mongo
@@ -29,6 +19,12 @@ matrix:
         - MONGODB_EXTENSION=mongodb
         - SEND_TO_OCULAR=yes
     - php: 7.0
+      env:
+        - MONGODB_EXTENSION=mongodb
+    - php: 7.1
+      env:
+        - MONGODB_EXTENSION=mongodb
+    - php: nightly
       env:
         - MONGODB_EXTENSION=mongodb
     - php: hhvm
